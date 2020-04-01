@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { pushItem } from "../redux/actions/inputAction";
+import { calculate_remaining } from "../redux/actions/amount_taken";
 
 class MyInput extends React.Component {
 	state = {
@@ -21,13 +22,17 @@ class MyInput extends React.Component {
 		total = total + parseFloat(inputValue);
 		if (e.key === "Enter") {
 			if (inputValue !== "") {
-				addList.forEach(element => {
-					total = total + parseFloat(element.title);
-				});
-				pushItem(
-					inputValue,
-					total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+				addList &&
+					addList.forEach(element => {
+						total = parseFloat(total) + parseFloat(element.title);
+						console.log(total);
+					});
+				this.props.calculate_remaining(
+					parseFloat(this.props.total) + parseFloat(inputValue),
+					null
 				);
+
+				pushItem(inputValue, total);
 				this.setState({
 					inputValue: ""
 				});
@@ -53,6 +58,9 @@ const styles = {
 	input: { height: "30px	", width: "200px", margin: "5px" }
 };
 const mapStateToProps = state => ({
-	addList: state.addList.listData
+	addList: state.addList.listData,
+	total: state.addList.total
 });
-export default connect(mapStateToProps, { pushItem })(MyInput);
+export default connect(mapStateToProps, { pushItem, calculate_remaining })(
+	MyInput
+);

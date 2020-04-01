@@ -1,6 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { total_amount_taken } from "../redux/actions/amount_taken";
+import {
+	total_amount_taken,
+	calculate_remaining
+} from "../redux/actions/amount_taken";
 
 class AmountTaken extends React.Component {
 	state = {
@@ -17,9 +20,10 @@ class AmountTaken extends React.Component {
 	};
 	ontotalAmountChange = e => {
 		for (let i = 0; i < document.getElementsByClassName("denom").length; i++) {
-			document.getElementsByClassName("denom")[i].value = "";
+			document.getElementsByClassName("denom")[i].value = parseInt("");
 		}
-		console.log(document.getElementsByClassName("denom")[0].value);
+		this.props.total_amount_taken(e.target.value);
+		this.props.calculate_remaining(this.props.totalBill, null);
 		this.setState({
 			five_thousand: 0,
 			one_thousand: 0,
@@ -46,150 +50,283 @@ class AmountTaken extends React.Component {
 			two,
 			one
 		} = this.state;
+		const numbers = /^[0-9]+$/;
+		if (e.target.value.match(numbers) || e.target.value === "") {
+			this.setState({
+				[e.target.id]: e.target.value * parseInt(e.target.name)
+			});
+			document.getElementById("total_amount").value = parseFloat("").toFixed(2);
 
-		this.setState({
-			[e.target.id]: e.target.value * parseInt(e.target.name)
-		});
-		document.getElementById("total_amount").value = "";
-		if (e.target.name === "5000") {
-			this.props.total_amount_taken(
-				5000 * e.target.value +
-					parseInt(one_thousand) +
-					parseInt(five_hundred) +
-					parseInt(one_hundred) +
-					parseInt(fifty) +
-					parseInt(twenty) +
-					parseInt(ten) +
-					parseInt(five) +
-					parseInt(two) +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "1000") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					1000 * e.target.value +
-					parseInt(five_hundred) +
-					parseInt(one_hundred) +
-					parseInt(fifty) +
-					parseInt(twenty) +
-					parseInt(ten) +
-					parseInt(five) +
-					parseInt(two) +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "500") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					parseInt(one_thousand) +
-					500 * e.target.value +
-					parseInt(one_hundred) +
-					parseInt(fifty) +
-					parseInt(twenty) +
-					parseInt(ten) +
-					parseInt(five) +
-					parseInt(two) +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "100") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					parseInt(one_thousand) +
-					parseInt(five_hundred) +
-					100 * e.target.value +
-					parseInt(fifty) +
-					parseInt(twenty) +
-					parseInt(ten) +
-					parseInt(five) +
-					parseInt(two) +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "50") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					parseInt(one_thousand) +
-					parseInt(five_hundred) +
-					parseInt(one_hundred) +
-					50 * e.target.value +
-					parseInt(twenty) +
-					parseInt(ten) +
-					parseInt(five) +
-					parseInt(two) +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "20") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					parseInt(one_thousand) +
-					parseInt(five_hundred) +
-					parseInt(one_hundred) +
-					parseInt(fifty) +
-					20 * e.target.value +
-					parseInt(ten) +
-					parseInt(five) +
-					parseInt(two) +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "10") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					parseInt(one_thousand) +
-					parseInt(five_hundred) +
-					parseInt(one_hundred) +
-					parseInt(fifty) +
-					parseInt(twenty) +
-					10 * e.target.value +
-					parseInt(five) +
-					parseInt(two) +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "5") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					parseInt(one_thousand) +
-					parseInt(five_hundred) +
-					parseInt(one_hundred) +
-					parseInt(fifty) +
-					parseInt(twenty) +
-					parseInt(ten) +
-					5 * e.target.value +
-					parseInt(two) +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "2") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					parseInt(one_thousand) +
-					parseInt(five_hundred) +
-					parseInt(one_hundred) +
-					parseInt(fifty) +
-					parseInt(twenty) +
-					parseInt(ten) +
-					parseInt(five) +
-					2 * e.target.value +
-					parseInt(one)
-			);
-		}
-		if (e.target.name === "1") {
-			this.props.total_amount_taken(
-				parseInt(five_thousand) +
-					parseInt(one_thousand) +
-					parseInt(five_hundred) +
-					parseInt(one_hundred) +
-					parseInt(fifty) +
-					parseInt(twenty) +
-					parseInt(ten) +
-					parseInt(five) +
-					parseInt(two) +
-					1 * e.target.value
-			);
+			if (e.target.name === "5000") {
+				this.props.total_amount_taken(
+					5000 * e.target.value +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					5000 * e.target.value +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "1000") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						1000 * e.target.value +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						1000 * e.target.value +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "500") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						500 * e.target.value +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						500 * e.target.value +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "100") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						100 * e.target.value +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						100 * e.target.value +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "50") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						50 * e.target.value +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						50 * e.target.value +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "20") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						20 * e.target.value +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						20 * e.target.value +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "10") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						10 * e.target.value +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						10 * e.target.value +
+						parseInt(five) +
+						parseInt(two) +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "5") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						5 * e.target.value +
+						parseInt(two) +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						5 * e.target.value +
+						parseInt(two) +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "2") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						2 * e.target.value +
+						parseInt(one)
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						2 * e.target.value +
+						parseInt(one)
+				);
+			}
+			if (e.target.name === "1") {
+				this.props.total_amount_taken(
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						1 * e.target.value
+				);
+				this.props.calculate_remaining(
+					this.props.totalBill,
+					parseInt(five_thousand) +
+						parseInt(one_thousand) +
+						parseInt(five_hundred) +
+						parseInt(one_hundred) +
+						parseInt(fifty) +
+						parseInt(twenty) +
+						parseInt(ten) +
+						parseInt(five) +
+						parseInt(two) +
+						1 * e.target.value
+				);
+			}
 		}
 	};
 
@@ -215,6 +352,23 @@ class AmountTaken extends React.Component {
 					}}
 				>
 					<tbody>
+						<tr>
+							<th style={{ textAlign: "right" }}>Amount Taken</th>
+							<th>
+								<input
+									type="number"
+									id="total_amount"
+									onChange={this.ontotalAmountChange}
+									style={styles.input}
+									placeholder="Amount Taken"
+								/>
+							</th>
+							<th style={styles.denom}>
+								{this.props.total
+									.toString()
+									.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+							</th>
+						</tr>
 						<tr>
 							<th style={{ textAlign: "right" }}>5000 x</th>
 							<th>
@@ -375,22 +529,6 @@ class AmountTaken extends React.Component {
 								{one.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 							</th>
 						</tr>
-						<tr>
-							<th style={{ textAlign: "right" }}>Amount Taken</th>
-							<th>
-								<input
-									id="total_amount"
-									onChange={this.ontotalAmountChange}
-									style={styles.input}
-									placeholder="Amount Taken"
-								/>
-							</th>
-							<th style={styles.denom}>
-								{this.props.total
-									.toString()
-									.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-							</th>
-						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -402,6 +540,10 @@ const styles = {
 	denom: { width: "100px" }
 };
 const mapStateToProps = state => ({
+	totalBill: state.addList.total,
 	total: state.amount_taken.total
 });
-export default connect(mapStateToProps, { total_amount_taken })(AmountTaken);
+export default connect(mapStateToProps, {
+	total_amount_taken,
+	calculate_remaining
+})(AmountTaken);

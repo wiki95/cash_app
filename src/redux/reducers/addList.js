@@ -7,13 +7,13 @@ const addList = (state = INITIAL_STATE, action) => {
 		case "HIT_ENTER":
 			return {
 				...state,
-				total: action.total,
+				total: parseFloat(action.total).toFixed(2),
 				listData: state.listData.concat({ title: action.payload })
 			};
 		case "DELETE_ITEM":
 			return {
 				...state,
-				total: action.total,
+				total: parseFloat(action.total).toFixed(2),
 				listData: action.payload
 			};
 		default:

@@ -3,6 +3,7 @@ import { List, Avatar } from "antd";
 import delete_icon from "../icons/delete_icon.png";
 import { connect } from "react-redux";
 import { removeItem } from "../redux/actions/inputAction";
+import { calculate_remaining } from "../redux/actions/amount_taken";
 
 class MyList extends React.Component {
 	removeItem = (e, ind) => {
@@ -15,6 +16,7 @@ class MyList extends React.Component {
 			total = total + parseFloat(element.title);
 		});
 		this.props.removeItem(filterData, total);
+		this.props.calculate_remaining(total);
 	};
 	render() {
 		return (
@@ -45,4 +47,6 @@ class MyList extends React.Component {
 const mapStateToProps = state => ({
 	addList: state.addList.listData
 });
-export default connect(mapStateToProps, { removeItem })(MyList);
+export default connect(mapStateToProps, { removeItem, calculate_remaining })(
+	MyList
+);
