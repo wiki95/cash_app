@@ -25,7 +25,6 @@ class MyInput extends React.Component {
 				addList &&
 					addList.forEach(element => {
 						total = parseFloat(total) + parseFloat(element.title);
-						console.log(total);
 					});
 				this.props.calculate_remaining(
 					parseFloat(this.props.total) + parseFloat(inputValue),

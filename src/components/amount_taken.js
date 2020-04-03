@@ -348,6 +348,7 @@ class AmountTaken extends React.Component {
 				<table
 					style={{
 						border: "2px solid black",
+						borderRadius: "10px",
 						backgroundColor: "#f7e9d2"
 					}}
 				>
@@ -364,9 +365,11 @@ class AmountTaken extends React.Component {
 								/>
 							</th>
 							<th style={styles.denom}>
-								{this.props.total
-									.toString()
-									.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+								{isNaN(this.props.total)
+									? "0"
+									: this.props.total
+											.toString()
+											.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 							</th>
 						</tr>
 						<tr>
