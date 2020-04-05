@@ -54,7 +54,7 @@ class MyInput extends React.Component {
 	}
 }
 const styles = {
-	input: { height: "30px	", width: "200px", margin: "5px" }
+	input: { height: "30px	", width: "220px", margin: "5px" }
 };
 const mapStateToProps = state => ({
 	addList: state.addList.listData,

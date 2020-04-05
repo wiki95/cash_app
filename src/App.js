@@ -67,7 +67,7 @@ const styles = {
 		backgroundColor: "#f7e9d2",
 		margin: "10px",
 		padding: "10px",
-		width: "300px"
+		width: "250px"
 	}
 };
 

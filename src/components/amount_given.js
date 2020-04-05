@@ -2,29 +2,33 @@ import React from "react";
 import { Switch } from "antd";
 import { connect } from "react-redux";
 import { onSwitch } from "../redux/actions/amount_given";
+import Standard from "./standard";
+import Manual from "./manual";
 
 class AmountGiven extends React.Component {
 	state = {
-		switchValue: "Standard"
+		toGiveSelf: "",
 	};
-	onSwitch = e => {
+	onSwitch = (e) => {
 		this.props.onSwitch(e);
-		if (e === false) {
-			this.setState({
-				switchValue: "Standard"
-			});
-		} else {
-			this.setState({
-				switchValue: "Manual"
-			});
-		}
+	};
+	onChangeToGive = (e) => {
+		this.setState({
+			toGiveSelf: e.target.value,
+		});
 	};
 	render() {
 		return (
 			<div style={styles.container}>
 				<div style={styles.innerContainer}>
 					<div>
-						<input type="number" style={styles.toGive} placeholder="To Give" />
+						<input
+							value={this.state.toGiveSelf}
+							onChange={this.onChangeToGive}
+							type="number"
+							style={styles.toGive}
+							placeholder="To Give"
+						/>
 					</div>
 					<div style={styles.switch}>
 						<div style={{ display: "flex", float: "right" }}>
@@ -35,83 +39,34 @@ class AmountGiven extends React.Component {
 				</div>
 				<h3>
 					For :{" "}
-					{this.props.amount > 0
-						? this.props.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-						: 0}
+					{this.state.toGiveSelf === ""
+						? this.props.amount > 0
+							? this.props.amount
+									.toString()
+									.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+							: 0
+						: this.state.toGiveSelf}
 				</h3>
-				<table width="100%" border="2">
-					<tbody>
-						<tr>
-							<th style={styles.cells}>0x</th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>5000x </th>
-							<th style={styles.cellsValue}>3</th>
-						</tr>
-					</tbody>
-				</table>
+				{this.props.switchOn ? (
+					<Manual />
+				) : (
+					<Standard toGiveSelf={this.state.toGiveSelf} />
+				)}
 			</div>
 		);
 	}
 }
 const styles = {
 	switch: {
-		display: "block"
+		display: "block",
 	},
 	innerContainer: {
 		display: "flex",
-		justifyContent: "space-between"
+		justifyContent: "space-between",
 	},
-	toGive: {
-		height: "30px",
-		width: "100px"
-	},
-	cells: {
-		width: "150px",
-		textAlign: "right",
-		fontSize: "15px"
-	},
-	cellsValue: {
-		width: "150px",
-		textAlign: "left",
-		fontSize: "20px"
-	}
 };
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	switchOn: state.amount_given.switchOn,
-	amount: state.amount_taken.toGive
+	amount: state.amount_taken.toGive,
 });
 export default connect(mapStateToProps, { onSwitch })(AmountGiven);
