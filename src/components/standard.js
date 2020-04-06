@@ -13,8 +13,6 @@ class Standard extends React.Component {
 		ten: true,
 		fiv: true,
 		two: true,
-		mounted: false,
-		denominationTotal: 0,
 		five_thousand: 0,
 		one_thousand: 0,
 		five_hundred: 0,
@@ -28,26 +26,76 @@ class Standard extends React.Component {
 		amountToWork: 0,
 	};
 	onCheck = (e) => {
-		///  for five thousand ///
-		if (e.target.name === "ft") {
-			if (e.target.isChecked) {
-				this.calculate_five_thousand(true);
-			} else {
-				this.calculate_five_thousand(false);
+		this.setState(
+			{
+				[e.target.name]: !e.target.isChecked,
+			},
+			() => {
+				this.calculationWithChanges();
 			}
-		}
-		this.setState({
-			[e.target.name]: !e.target.isChecked,
-		});
+		);
 	};
-
-	componentDidMount() {
-		this.setState({
-			mounted: true,
-		});
-	}
-	calculate_total = () => {
+	calculationWithChanges = () => {
 		const {
+			ft,
+			ot,
+			fh,
+			oh,
+			fif,
+			twe,
+			ten,
+			fiv,
+			two,
+			amountToWork,
+		} = this.state;
+		let remAfterCalc = amountToWork;
+		let five_thousand,
+			one_thousand,
+			five_hundred,
+			one_hundred,
+			_fifty,
+			_twenty,
+			_ten,
+			_five,
+			_two = 0;
+		if (ft === true) {
+			five_thousand = Math.floor(remAfterCalc / 5000);
+			remAfterCalc = remAfterCalc % 5000;
+		}
+		if (ot === true) {
+			one_thousand = Math.floor(remAfterCalc / 1000);
+			remAfterCalc = remAfterCalc % 1000;
+		}
+		if (fh === true) {
+			five_hundred = Math.floor(remAfterCalc / 500);
+			remAfterCalc = remAfterCalc % 500;
+		}
+		if (oh === true) {
+			one_hundred = Math.floor(remAfterCalc / 100);
+			remAfterCalc = remAfterCalc % 100;
+		}
+		if (fif === true) {
+			_fifty = Math.floor(remAfterCalc / 50);
+			remAfterCalc = remAfterCalc % 50;
+		}
+		if (twe === true) {
+			_twenty = Math.floor(remAfterCalc / 20);
+			remAfterCalc = remAfterCalc % 20;
+		}
+		if (ten === true) {
+			_ten = Math.floor(remAfterCalc / 10);
+			remAfterCalc = remAfterCalc % 10;
+		}
+		if (fiv === true) {
+			_five = Math.floor(remAfterCalc / 5);
+			remAfterCalc = remAfterCalc % 5;
+		}
+		if (two === true) {
+			_two = Math.floor(remAfterCalc / 2);
+			remAfterCalc = remAfterCalc % 2;
+		}
+
+		this.setState({
 			five_thousand,
 			one_thousand,
 			five_hundred,
@@ -57,40 +105,16 @@ class Standard extends React.Component {
 			_ten,
 			_five,
 			_two,
-			_one,
-		} = this.state;
-		return (
-			five_thousand * 5000 +
-			one_thousand * 1000 +
-			five_hundred * 500 +
-			one_hundred * 100 +
-			_fifty * 50 +
-			_twenty * 20 +
-			_ten * 10 +
-			_five * 5 +
-			_two * 2 +
-			_one
-		);
+			_one: parseFloat(remAfterCalc).toFixed(2),
+		});
 	};
-	calculate_five_thousand = (check) => {
-		const { amountToWork, five_thousand } = this.state;
-		const calcDenom = Math.floor(amountToWork / 5000);
-		let denominationTotal =
-			this.calculate_total() - five_thousand * 5000 + calcDenom * 5000;
-		if (amountToWork === "" || amountToWork === 0 || amountToWork === "0") {
-		} else {
-			this.setState({
-				five_thousand: calcDenom,
-				denominationTotal: check ? denominationTotal : 0,
-			});
-		}
-	};
+
 	componentDidUpdate(prevProps) {
 		if (prevProps !== this.props) {
-			this.calculate_five_thousand(true);
+			this.calculationWithChanges();
 		}
 	}
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const auto = nextProps.amountToGive;
 		const manual = nextProps.toGiveSelf;
 		if (manual === "") {
@@ -126,7 +150,15 @@ class Standard extends React.Component {
 			fiv,
 			two,
 			five_thousand,
-			denominationTotal,
+			one_thousand,
+			five_hundred,
+			one_hundred,
+			_fifty,
+			_twenty,
+			_ten,
+			_five,
+			_two,
+			_one,
 		} = this.state;
 		return (
 			<div>
@@ -143,9 +175,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.ft = r)} style={styles.cellsValue}>
-								{five_thousand}
-							</th>
+							<th style={styles.cellsValue}>{five_thousand}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -158,9 +188,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.ot = r)} style={styles.cellsValue}>
-								{}
-							</th>
+							<th style={styles.cellsValue}>{one_thousand}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -173,9 +201,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.fh = r)} style={styles.cellsValue}>
-								{}
-							</th>
+							<th style={styles.cellsValue}>{five_hundred}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -188,9 +214,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.oh = r)} style={styles.cellsValue}>
-								{}
-							</th>
+							<th style={styles.cellsValue}>{one_hundred}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -203,7 +227,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.fif = r)} style={styles.cellsValue}></th>
+							<th style={styles.cellsValue}>{_fifty}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -216,7 +240,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.twe = r)} style={styles.cellsValue}></th>
+							<th style={styles.cellsValue}>{_twenty}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -229,7 +253,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.ten = r)} style={styles.cellsValue}></th>
+							<th style={styles.cellsValue}>{_ten}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -242,7 +266,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.fiv = r)} style={styles.cellsValue}></th>
+							<th style={styles.cellsValue}>{_five}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -255,17 +279,11 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th ref={(r) => (this.two = r)} style={styles.cellsValue}></th>
+							<th style={styles.cellsValue}>{_two}</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>1x</th>
-							<th ref={(r) => (this.one = r)} style={styles.cellsValue}></th>
-						</tr>
-						<tr>
-							<th style={styles.cells}>Total</th>
-							<th ref={(r) => (this.ttl = r)} style={styles.cellsValue}>
-								{denominationTotal.toString()}
-							</th>
+							<th style={styles.cellsValue}>{_one}</th>
 						</tr>
 					</tbody>
 				</table>
@@ -279,6 +297,7 @@ const styles = {
 		textAlign: "right",
 		fontSize: "15px",
 		paddingRight: "5px",
+		height: "40px",
 	},
 	cellsValue: {
 		width: "125px",
