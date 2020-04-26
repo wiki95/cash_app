@@ -35,6 +35,7 @@ class AmountGiven extends React.Component {
 				<div style={styles.innerContainer}>
 					<div>
 						<input
+							id="total_given_self"
 							value={this.state.toGiveSelf}
 							onChange={this.onChangeToGive}
 							type="number"
@@ -67,7 +68,11 @@ class AmountGiven extends React.Component {
 				) : (
 					<Standard toGiveSelf={this.state.toGiveSelf} />
 				)}
-				<input style={{ marginTop: "10px" }} placeholder="USER ID" />
+				<input
+					id="user_id"
+					style={{ marginTop: "10px" }}
+					placeholder="USER ID"
+				/>
 				<SaveData onReset={this.onReset} />
 				<ViewData />
 			</div>

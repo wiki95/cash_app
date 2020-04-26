@@ -181,7 +181,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(five_thousand) === 0 ? "" : five_thousand}
 							</th>
 						</tr>
@@ -196,7 +196,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(one_thousand) === 0 ? "" : one_thousand}
 							</th>
 						</tr>
@@ -211,7 +211,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(five_hundred) === 0 ? "" : five_hundred}
 							</th>
 						</tr>
@@ -226,7 +226,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(one_hundred) === 0 ? "" : one_hundred}
 							</th>
 						</tr>
@@ -241,7 +241,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(_fifty) === 0 ? "" : _fifty}
 							</th>
 						</tr>
@@ -256,7 +256,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(_twenty) === 0 ? "" : _twenty}
 							</th>
 						</tr>
@@ -271,7 +271,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(_ten) === 0 ? "" : _ten}
 							</th>
 						</tr>
@@ -286,7 +286,7 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(_five) === 0 ? "" : _five}
 							</th>
 						</tr>
@@ -301,13 +301,13 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(_two) === 0 ? "" : _two}
 							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>1x</th>
-							<th style={styles.cellsValue}>
+							<th className="denomGivenAuto" style={styles.cellsValue}>
 								{parseInt(_one) === 0 ? "" : _one}
 							</th>
 						</tr>

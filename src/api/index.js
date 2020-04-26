@@ -3,7 +3,7 @@ import axios from "axios";
 export const saveData = async (val) => {
 	let config = {
 		method: "POST",
-		url: `${process.env.REACT_APP_BACKEND}/saveData`,
+		url: `${process.env.REACT_APP_BACKEND}/saveRecord`,
 		headers: {
 			"content-type": "application/json",
 		},

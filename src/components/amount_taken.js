@@ -20,7 +20,7 @@ class AmountTaken extends React.Component {
 	};
 	ontotalAmountChange = (e) => {
 		for (let i = 0; i < document.getElementsByClassName("denom").length; i++) {
-			document.getElementsByClassName("denom")[i].value = parseInt("");
+			document.getElementsByClassName("denom")[i].value = "";
 		}
 		this.props.total_amount_taken(e.target.value);
 		this.props.calculate_remaining(this.props.totalBill, null);
@@ -55,7 +55,7 @@ class AmountTaken extends React.Component {
 			this.setState({
 				[e.target.id]: e.target.value * parseInt(e.target.name),
 			});
-			document.getElementById("total_amount").value = parseFloat("").toFixed(2);
+			document.getElementById("total_amount").value = "";
 
 			if (e.target.name === "5000") {
 				this.props.total_amount_taken(
