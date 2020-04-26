@@ -5,17 +5,14 @@ import { calculate_remaining } from "../redux/actions/amount_taken";
 
 class MyInput extends React.Component {
 	state = {
-		inputValue: ""
+		inputValue: "",
 	};
-	onChange = e => {
-		//let numbers = /^[0-9]+$/;
-		//if (e.target.value.match(numbers) !== null || e.target.value === "") {
+	onChange = (e) => {
 		this.setState({
-			inputValue: e.target.value
+			inputValue: e.target.value,
 		});
-		//}
 	};
-	onPressEnter = e => {
+	onPressEnter = (e) => {
 		const { inputValue } = this.state;
 		const { pushItem, addList } = this.props;
 		var total = 0;
@@ -23,7 +20,7 @@ class MyInput extends React.Component {
 		if (e.key === "Enter") {
 			if (inputValue !== "") {
 				addList &&
-					addList.forEach(element => {
+					addList.forEach((element) => {
 						total = parseFloat(total) + parseFloat(element.title);
 					});
 				this.props.calculate_remaining(
@@ -33,7 +30,7 @@ class MyInput extends React.Component {
 
 				pushItem(inputValue, total);
 				this.setState({
-					inputValue: ""
+					inputValue: "",
 				});
 			}
 		}
@@ -42,6 +39,7 @@ class MyInput extends React.Component {
 		return (
 			<div style={{ display: "flex" }}>
 				<input
+					className="total_bill"
 					style={styles.input}
 					placeholder="Actual Amount"
 					type="number"
@@ -54,11 +52,11 @@ class MyInput extends React.Component {
 	}
 }
 const styles = {
-	input: { height: "30px	", width: "220px", margin: "5px" }
+	input: { height: "30px	", width: "220px", margin: "5px" },
 };
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	addList: state.addList.listData,
-	total: state.addList.total
+	total: state.addList.total,
 });
 export default connect(mapStateToProps, { pushItem, calculate_remaining })(
 	MyInput

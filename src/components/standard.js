@@ -94,7 +94,6 @@ class Standard extends React.Component {
 			_two = Math.floor(remAfterCalc / 2);
 			remAfterCalc = remAfterCalc % 2;
 		}
-
 		this.setState({
 			five_thousand,
 			one_thousand,
@@ -108,34 +107,41 @@ class Standard extends React.Component {
 			_one: parseFloat(remAfterCalc).toFixed(2),
 		});
 	};
-
+	componentDidMount() {
+		const amountToWork = this.onUpdatingOrMounting(
+			this.props.amountToGive,
+			this.props.toGiveSelf
+		);
+		this.setState({ amountToWork }, () => {
+			this.calculationWithChanges();
+		});
+	}
 	componentDidUpdate(prevProps) {
 		if (prevProps !== this.props) {
 			this.calculationWithChanges();
 		}
 	}
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		const auto = nextProps.amountToGive;
-		const manual = nextProps.toGiveSelf;
+	onUpdatingOrMounting = (auto, manual) => {
+		let amountToWork = 0;
 		if (manual === "") {
 			if (auto > 0) {
-				this.setState({
-					amountToWork: auto,
-				});
+				amountToWork = auto;
 			} else {
-				this.setState({
-					amountToWork: 0,
-				});
+				amountToWork = 0;
 			}
 		} else if (parseFloat(manual) < 1) {
-			this.setState({
-				amountToWork: 0,
-			});
+			amountToWork = 0;
 		} else {
-			this.setState({
-				amountToWork: manual,
-			});
+			amountToWork = manual;
 		}
+		return amountToWork;
+	};
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		const amountToWork = this.onUpdatingOrMounting(
+			nextProps.amountToGive,
+			nextProps.toGiveSelf
+		);
+		this.setState({ amountToWork });
 	}
 
 	render() {
@@ -175,7 +181,9 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{five_thousand}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(five_thousand) === 0 ? "" : five_thousand}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -188,7 +196,9 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{one_thousand}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(one_thousand) === 0 ? "" : one_thousand}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -201,7 +211,9 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{five_hundred}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(five_hundred) === 0 ? "" : five_hundred}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -214,7 +226,9 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{one_hundred}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(one_hundred) === 0 ? "" : one_hundred}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -227,7 +241,9 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{_fifty}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(_fifty) === 0 ? "" : _fifty}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -240,7 +256,9 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{_twenty}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(_twenty) === 0 ? "" : _twenty}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -253,7 +271,9 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{_ten}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(_ten) === 0 ? "" : _ten}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -266,7 +286,9 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{_five}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(_five) === 0 ? "" : _five}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>
@@ -279,11 +301,15 @@ class Standard extends React.Component {
 									defaultChecked
 								/>
 							</th>
-							<th style={styles.cellsValue}>{_two}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(_two) === 0 ? "" : _two}
+							</th>
 						</tr>
 						<tr>
 							<th style={styles.cells}>1x</th>
-							<th style={styles.cellsValue}>{_one}</th>
+							<th style={styles.cellsValue}>
+								{parseInt(_one) === 0 ? "" : _one}
+							</th>
 						</tr>
 					</tbody>
 				</table>
@@ -297,7 +323,7 @@ const styles = {
 		textAlign: "right",
 		fontSize: "15px",
 		paddingRight: "5px",
-		height: "40px",
+		height: "35px",
 	},
 	cellsValue: {
 		width: "125px",

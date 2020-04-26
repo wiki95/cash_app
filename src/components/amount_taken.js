@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import {
 	total_amount_taken,
-	calculate_remaining
+	calculate_remaining,
 } from "../redux/actions/amount_taken";
 
 class AmountTaken extends React.Component {
@@ -16,9 +16,9 @@ class AmountTaken extends React.Component {
 		ten: 0,
 		five: 0,
 		two: 0,
-		one: 0
+		one: 0,
 	};
-	ontotalAmountChange = e => {
+	ontotalAmountChange = (e) => {
 		for (let i = 0; i < document.getElementsByClassName("denom").length; i++) {
 			document.getElementsByClassName("denom")[i].value = parseInt("");
 		}
@@ -34,10 +34,10 @@ class AmountTaken extends React.Component {
 			ten: 0,
 			five: 0,
 			two: 0,
-			one: 0
+			one: 0,
 		});
 	};
-	onDenomChange = e => {
+	onDenomChange = (e) => {
 		const {
 			five_thousand,
 			one_thousand,
@@ -48,12 +48,12 @@ class AmountTaken extends React.Component {
 			ten,
 			five,
 			two,
-			one
+			one,
 		} = this.state;
 		const numbers = /^[0-9]+$/;
 		if (e.target.value.match(numbers) || e.target.value === "") {
 			this.setState({
-				[e.target.id]: e.target.value * parseInt(e.target.name)
+				[e.target.id]: e.target.value * parseInt(e.target.name),
 			});
 			document.getElementById("total_amount").value = parseFloat("").toFixed(2);
 
@@ -329,7 +329,45 @@ class AmountTaken extends React.Component {
 			}
 		}
 	};
-
+	componentDidUpdate(prevProps) {
+		let a = document.getElementsByClassName("denom")[0].value;
+		let at = document.getElementsByClassName("denom")[1].value;
+		let b = document.getElementsByClassName("denom")[2].value;
+		let c = document.getElementsByClassName("denom")[3].value;
+		let d = document.getElementsByClassName("denom")[4].value;
+		let e = document.getElementsByClassName("denom")[5].value;
+		let f = document.getElementsByClassName("denom")[6].value;
+		let g = document.getElementsByClassName("denom")[7].value;
+		let h = document.getElementsByClassName("denom")[8].value;
+		let i = document.getElementsByClassName("denom")[9].value;
+		if (
+			a === "" &&
+			at === "" &&
+			b === "" &&
+			c === "" &&
+			d === "" &&
+			e === "" &&
+			f === "" &&
+			g === "" &&
+			h === "" &&
+			i === ""
+		) {
+			if (prevProps !== this.props) {
+				this.setState({
+					five_thousand: 0,
+					one_thousand: 0,
+					five_hundred: 0,
+					one_hundred: 0,
+					fifty: 0,
+					twenty: 0,
+					ten: 0,
+					five: 0,
+					two: 0,
+					one: 0,
+				});
+			}
+		}
+	}
 	render() {
 		const {
 			five_thousand,
@@ -341,7 +379,7 @@ class AmountTaken extends React.Component {
 			ten,
 			five,
 			two,
-			one
+			one,
 		} = this.state;
 		return (
 			<div>
@@ -349,7 +387,7 @@ class AmountTaken extends React.Component {
 					style={{
 						border: "2px solid black",
 						borderRadius: "10px",
-						backgroundColor: "#f7e9d2"
+						backgroundColor: "#f7e9d2",
 					}}
 				>
 					<tbody>
@@ -540,13 +578,13 @@ class AmountTaken extends React.Component {
 }
 const styles = {
 	input: { height: "30px	", width: "100px", margin: "5px" },
-	denom: { width: "100px" }
+	denom: { width: "100px" },
 };
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	totalBill: state.addList.total,
-	total: state.amount_taken.total
+	total: state.amount_taken.total,
 });
 export default connect(mapStateToProps, {
 	total_amount_taken,
-	calculate_remaining
+	calculate_remaining,
 })(AmountTaken);

@@ -12,11 +12,11 @@ class MyList extends React.Component {
 		const filterData = this.props.addList.filter((val, i) => {
 			return i !== ind;
 		});
-		filterData.forEach(element => {
+		filterData.forEach((element) => {
 			total = total + parseFloat(element.title);
 		});
 		this.props.removeItem(filterData, total);
-		this.props.calculate_remaining(total);
+		this.props.calculate_remaining(total, null);
 	};
 	render() {
 		return (
@@ -29,7 +29,7 @@ class MyList extends React.Component {
 						<List.Item.Meta
 							avatar={
 								<Avatar
-									onClick={e => this.removeItem(e, ind)}
+									onClick={(e) => this.removeItem(e, ind)}
 									style={{ cursor: "pointer" }}
 									size={20}
 									src={delete_icon}
@@ -44,8 +44,8 @@ class MyList extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	addList: state.addList.listData
+const mapStateToProps = (state) => ({
+	addList: state.addList.listData,
 });
 export default connect(mapStateToProps, { removeItem, calculate_remaining })(
 	MyList

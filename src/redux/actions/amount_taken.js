@@ -1,7 +1,7 @@
-export const total_amount_taken = total => {
+export const total_amount_taken = (total) => {
 	return {
 		type: "CHANGE_DENOM",
-		payload: total
+		payload: total,
 	};
 };
 
@@ -9,6 +9,12 @@ export const calculate_remaining = (val, totalTaken) => {
 	return {
 		type: "CALCULATE_REMAINING",
 		payload: val,
-		tTaken: totalTaken
+		tTaken: totalTaken,
+	};
+};
+
+export const emptyTaken = () => {
+	return {
+		type: "EMPTY_TAKEN",
 	};
 };

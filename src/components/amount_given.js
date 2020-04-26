@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { onSwitch } from "../redux/actions/amount_given";
 import Standard from "./standard";
 import Manual from "./manual";
+import SaveData from "./save_data";
+import ViewData from "./view_data";
 
 class AmountGiven extends React.Component {
 	state = {
@@ -16,6 +18,16 @@ class AmountGiven extends React.Component {
 		this.setState({
 			toGiveSelf: e.target.value,
 		});
+	};
+	onReset = () => {
+		this.setState(
+			{
+				toGiveSelf: "",
+			},
+			() => {
+				this.props.onSwitch(false);
+			}
+		);
 	};
 	render() {
 		return (
@@ -32,7 +44,7 @@ class AmountGiven extends React.Component {
 					</div>
 					<div style={styles.switch}>
 						<div style={{ display: "flex", float: "right" }}>
-							<Switch onChange={this.onSwitch} />
+							<Switch checked={this.props.switchOn} onChange={this.onSwitch} />
 						</div>
 						<h3>{this.props.switchOn ? "Manual" : "Standard"}</h3>
 					</div>
@@ -48,10 +60,16 @@ class AmountGiven extends React.Component {
 						: this.state.toGiveSelf}
 				</h3>
 				{this.props.switchOn ? (
-					<Manual />
+					<Manual
+						toGiveSelf={this.state.toGiveSelf}
+						remaining={this.props.amount}
+					/>
 				) : (
 					<Standard toGiveSelf={this.state.toGiveSelf} />
 				)}
+				<input style={{ marginTop: "10px" }} placeholder="USER ID" />
+				<SaveData onReset={this.onReset} />
+				<ViewData />
 			</div>
 		);
 	}
