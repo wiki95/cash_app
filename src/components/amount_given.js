@@ -5,7 +5,6 @@ import { onSwitch } from "../redux/actions/amount_given";
 import Standard from "./standard";
 import Manual from "./manual";
 import SaveData from "./save_data";
-import ViewData from "./view_data";
 
 class AmountGiven extends React.Component {
 	state = {
@@ -74,7 +73,6 @@ class AmountGiven extends React.Component {
 					placeholder="USER ID"
 				/>
 				<SaveData onReset={this.onReset} />
-				<ViewData />
 			</div>
 		);
 	}

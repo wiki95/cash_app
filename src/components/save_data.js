@@ -4,6 +4,7 @@ import { emptyList } from "../redux/actions/inputAction";
 import { emptyTaken } from "../redux/actions/amount_taken";
 import { emptyGiven } from "../redux/actions/amount_given";
 import { saveData } from "../api";
+import { message } from "antd";
 
 class SaveData extends React.Component {
 	onSave = () => {
@@ -86,13 +87,22 @@ class SaveData extends React.Component {
 			g_one,
 		};
 		if (userId !== "") {
-			saveData(data).then((res, err) => {
-				if (res) {
-					console.log(res);
-				} else {
-					console.log(err);
-				}
-			});
+			message.loading("Please Wait! Connection Is Slow");
+			saveData(data)
+				.then((res, err) => {
+					if (res) {
+						message.destroy();
+						message.success("Data Saved!");
+						this.onReset();
+					} else {
+						message.destroy();
+						message.error("Something Went Wrong");
+					}
+				})
+				.catch((err) => {
+					message.destroy();
+					message.error("Something Went Wrong");
+				});
 			//this.onReset();
 		} else {
 			alert("Enter User First!!");

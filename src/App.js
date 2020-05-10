@@ -7,14 +7,15 @@ import Data from "./components/data";
 import AmountTaken from "./components/amount_taken";
 import AmountGiven from "./components/amount_given";
 import bg from "./images/bg4.jpg";
+import ViewData from "./components/view_data";
 
 class App extends React.Component {
 	state = {
-		typingVal: ""
+		typingVal: "",
 	};
-	typing = e => {
+	typing = (e) => {
 		this.setState({
-			typingVal: e.target.value
+			typingVal: e.target.value,
 		});
 	};
 	render() {
@@ -34,6 +35,9 @@ class App extends React.Component {
 					<div style={styles.amount_given}>
 						<AmountGiven />
 					</div>
+					<div>
+						<ViewData />
+					</div>
 				</div>
 			</Provider>
 		);
@@ -46,20 +50,20 @@ const styles = {
 		padding: "20px",
 		justifyContent: "center",
 		backgroundImage: `url(${bg})`,
-		backgroundSize: "cover"
+		backgroundSize: "cover",
 	},
 	inputItem: {
 		border: "2px solid black",
 		borderRadius: "10px",
 		backgroundColor: "#f7e9d2",
 		padding: "5px",
-		margin: "10px"
+		margin: "10px",
 	},
 	list: {
-		width: "200px"
+		width: "200px",
 	},
 	data: {
-		margin: "10px"
+		margin: "10px",
 	},
 	amount_given: {
 		border: "2px solid black",
@@ -67,8 +71,8 @@ const styles = {
 		backgroundColor: "#f7e9d2",
 		margin: "10px",
 		padding: "10px",
-		width: "250px"
-	}
+		width: "250px",
+	},
 };
 
 export default App;
